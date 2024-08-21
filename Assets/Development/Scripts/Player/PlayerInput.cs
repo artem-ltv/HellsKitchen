@@ -6,20 +6,22 @@ namespace HellsKitchen
     {
         [SerializeField] private PlayerMover _playerMover;
 
-        private const string Horizontal = nameof(Horizontal);
-        private const string Vertical = nameof(Vertical);
+        private PlayerInputAction _inputActions;
+
+        private void Start()
+        {
+            _inputActions = new PlayerInputAction();
+            _inputActions.Player.Enable();
+        }
 
         private void Update()
         {
-            float horizontal = Input.GetAxis(Horizontal);
-            float vertical = Input.GetAxis(Vertical);
+            Vector3 inputVector = _inputActions.Player.Move.ReadValue<Vector3>();
 
-            Vector3 direction = new Vector3(horizontal, 0f, vertical);
-
-            if(direction != Vector3.zero)
+            if(inputVector != Vector3.zero)
             {
-                _playerMover.Move(direction);
-                _playerMover.Rotate(direction);
+                _playerMover.Move(inputVector);
+                _playerMover.Rotate(inputVector);
             }
 
             else
